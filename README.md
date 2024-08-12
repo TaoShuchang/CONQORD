@@ -8,62 +8,26 @@ LLMs frequently produce incorrect or nonsensical outputs. Traditional methods ty
 
 ![image-20240812012520716](./assets/CONQORD.png)
 
-If you find our code, models, or the paper useful, please cite the paper:
-
-```latex
-@inproceedings{Tao2024,
-  author       = {Shuchang Tao and
-                  Liuyi Yao and
-                  Hanxing Ding and
-                  Yuexiang Xie and
-                  Qi Cao and
-                  Fei Sun and
-                  Jinyang Gao and
-                  Huawei Shen and
-                  Bolin Ding},
-  title        = {When to Trust LLMs: Aligning Confidence with Response Quality},
-  journal      = {CoRR},
-  volume       = {abs/2404.17287},
-  year         = {2024},
-  url          = {https://doi.org/10.48550/arXiv.2404.17287},
-  doi          = {10.48550/ARXIV.2404.17287},
-  eprinttype    = {arXiv},
-  eprint       = {2404.17287},
-  timestamp    = {Mon, 03 Jun 2024 20:48:03 +0200},
-  biburl       = {https://dblp.org/rec/journals/corr/abs-2404-17287.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-```
 
 
 
 ## Installation
+```
+python>=3.9
+torch>=1.13.0+cu117
+tensorboardX>=2.6.2.2
+transformers>=4.28.1
+deepspeed>=0.14.1
+huggingface_hub>=0.22.1
+numpy>=1.24.3
+scipy>=1.12.0
+pandas>=2.1.4
+```
 
-python 3.9
+## Datasets
+The training dataset in the paper released at https://huggingface.co/datasets/hooope/CONQORD_dataset/tree/main.
 
-torch
-
-tensorboardX
-
-transformers
-
-deepspeed
-
-huggingface_hub
-
-
-
-numpy
-
-scipy
-
-pandas
-
-re
-
-asyncio
-
-
+The evaluation datasets are [TruthfulQA](https://github.com/sylinrl/TruthfulQA) and [Natural Quesions](https://github.com/google-research-datasets/natural-questions).
 
 ## Training and Evaluation
 
@@ -71,9 +35,7 @@ asyncio
 
 > Please run "CONQORD/step1_supervised_finetuning_LM/run_step1.sh"
 
-**Step 1.0**: Downloading dataset from https://huggingface.co/datasets/Dahoas/rm-static, and save them to ../datasets/Dahoas
-
-**Step 1.1**: Downloading the foundation model, such as LLAMA2, Mistral or Zephyr from huggingface ad save them to ../model_pth
+**Step 1.1**: Downloading dataset from https://huggingface.co/datasets/hooope/CONQORD_datasets/conqord_step1_data, and save them to ../datasets/conqord_step1_data/
 
 **Step 1.2**: Create log, checkpoint, tensorboard folders
 
@@ -113,7 +75,7 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3 nohup deepspeed --master_port 13001 main.py 
 
 > Please run "CONQORD/step2_reward_model/run_step2.sh"
 
-**Step 2.1**:Downloading dataset from https://huggingface.co/datasets/Anthropic/hh-rlhf, and save them to ../datasets/Anthropic/hh-rlhf/
+**Step 2.1**: Downloading dataset from https://huggingface.co/datasets/hooope/CONQORD_datasets/conqord_step2_data, and save them to ../datasets/conqord_step2_data/
 
 **Step 2.2**: Run main.py in step2
 
@@ -205,11 +167,11 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3 nohup deepspeed --master_port 33001 main.py 
 
 **Step 4.1**: CONQORD Inference
 
-    nohup python -u test_conqord.py --data_name truthful_qa \
-    --mode llama2_7b \
-    --suffix conqord_llama2_nq \
-    --path ../step3_rlhf_finetuning/checkpoint/step3_RL_finetune_LLM/ep1/step30/actor \
-    --gpu 2 > ./log/truthful_qa/conqord_llama2.log 2>&1 &
+​    nohup python -u test_conqord.py --data_name truthful_qa \
+​    --mode llama2_7b \
+​    --suffix conqord_llama2_nq \
+​    --path ../step3_rlhf_finetuning/checkpoint/step3_RL_finetune_LLM/ep1/step30/actor \
+​    --gpu 2 > ./log/truthful_qa/conqord_llama2.log 2>&1 &
 
 **Step 4.2**: Evaluating performance for CONQORD
 
@@ -222,3 +184,30 @@ nohup python -u gpt_evaluation.py --data_name truthful_qa --suffix conqord_llama
 ## Contact
 
 If you have questions, please open an issue mentioning @ or send an email to shuchangtao5@gmail.com
+
+If you find our code, models, or the paper useful, please cite the paper:
+
+```latex
+@inproceedings{Tao2024,
+  author       = {Shuchang Tao and
+                  Liuyi Yao and
+                  Hanxing Ding and
+                  Yuexiang Xie and
+                  Qi Cao and
+                  Fei Sun and
+                  Jinyang Gao and
+                  Huawei Shen and
+                  Bolin Ding},
+  title        = {When to Trust LLMs: Aligning Confidence with Response Quality},
+  journal      = {CoRR},
+  volume       = {abs/2404.17287},
+  year         = {2024},
+  url          = {https://doi.org/10.48550/arXiv.2404.17287},
+  doi          = {10.48550/ARXIV.2404.17287},
+  eprinttype    = {arXiv},
+  eprint       = {2404.17287},
+  timestamp    = {Mon, 03 Jun 2024 20:48:03 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2404-17287.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

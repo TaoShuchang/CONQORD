@@ -6,9 +6,7 @@
 # Step 1.0: Downloading the foundation model, such as LLAMA2, Mistral or Zephyr from huggingface ad save them to ../model_pth
 
 
-# Step 1.1: Downloading dataset from https://huggingface.co/datasets/Dahoas/rm-static, and save them to ../datasets/Dahoas
-
-
+# Step 1.1: Downloading dataset from https://huggingface.co/datasets/hooope/CONQORD_datasets/conqord_step1_data, and save them to ../datasets/conqord_step1_data/
 
 
 # Step 1.2: Create log, checkpoint, tensorboard folders
@@ -18,7 +16,7 @@ mkdir -p tensorboard
 
 # Step 1.3: Run main.py in step1
 export CUDA_VISIBLE_DEVICES=0,1,2,3 nohup deepspeed --master_port 13001 main.py \
-   --data_path ../datasets/Dahoas/rm-static_conf_both/ \
+   --data_path ../datasets/conqord_step1_data/ \
    --data_split 10,0,0 \
    --model_name_or_path ../model_pth/llama2_hf_7b/ \
    --per_device_train_batch_size 32 \

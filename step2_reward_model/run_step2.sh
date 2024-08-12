@@ -10,11 +10,11 @@ mkdir -p log
 mkdir -p checkpoint
 mkdir -p tensorboard
 
-# Step 2.1: Downloading dataset from https://huggingface.co/datasets/Anthropic/hh-rlhf, and save them to ../datasets/Anthropic/hh-rlhf/
+# Step 2.1: Downloading dataset from https://huggingface.co/datasets/hooope/CONQORD_datasets/conqord_step2_data, and save them to ../datasets/conqord_step2_data/
 
 # Step 2.2: Run main.py in step2
 export CUDA_VISIBLE_DEVICES=0,1,2,3 nohup deepspeed --master_port 23001 main.py \
-   --data_path ../datasets/Anthropic/hh-rlhf/helpful-base \
+   --data_path ../datasets/conqord_step2_data/ \
    --data_split 0,10,0 \
    --model_name_or_path ../model_pth/llama2_hf_7b/ \
    --data_output_path ../datasets/datatmp/ \

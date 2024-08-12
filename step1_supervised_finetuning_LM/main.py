@@ -1,3 +1,4 @@
+import os
 import argparse
 import os
 import math
@@ -34,7 +35,7 @@ def parse_args():
     parser.add_argument('--data_path',
                         nargs='*',
                         # default=['Dahoas/rm-static'],
-                        default=['/mnt/taoshuchang/datasets/Dahoas/rm-static'],
+                        default=['/mnt/data/taoshuchang.tsc/datasets/Dahoas/rm-static'],
                         help='Path to the training dataset. Accepted format:'
                         '1) a single data path, 2) multiple datasets in the'
                         'form: dataset1-path dataset2-path ...')
@@ -60,7 +61,7 @@ def parse_args():
     parser.add_argument(
         "--model_name_or_path",
         type=str,
-        default='/mnt/taoshuchang/model_pth/llama2_all_hf/llama2_hf_7b/',
+        default='/mnt/data/taoshuchang.tsc/model_pth/llama2_all_hf/llama2_hf_7b/',
         help=
         "Path to pretrained model or model identifier from huggingface.co/models.",
         # required=True,
@@ -190,7 +191,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-
+    
     if args.local_rank == -1:
         device = torch.device("cuda")
     else:
@@ -267,11 +268,14 @@ def main():
         losses = 0
         for step, batch in enumerate(eval_dataloader):
             batch = to_device(batch, device)
+            model.to(device)
             with torch.no_grad():
                 outputs = model(**batch)
 
             loss = outputs.loss
             losses += loss.float()
+            if step == 100:
+                break
         losses = losses / (step + 1)
         try:
             perplexity = torch.exp(losses)
