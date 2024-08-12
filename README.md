@@ -166,12 +166,13 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3 nohup deepspeed --master_port 33001 main.py 
 > Please run "CONQORD/step4_evaluation/run_step4.sh"
 
 **Step 4.1**: CONQORD Inference
-
-​    nohup python -u test_conqord.py --data_name truthful_qa \
-​    --mode llama2_7b \
-​    --suffix conqord_llama2_nq \
-​    --path ../step3_rlhf_finetuning/checkpoint/step3_RL_finetune_LLM/ep1/step30/actor \
-​    --gpu 2 > ./log/truthful_qa/conqord_llama2.log 2>&1 &
+```
+nohup python -u test_conqord.py --data_name truthful_qa \
+   --mode llama2_7b \
+   --suffix conqord_llama2_nq \
+   --path ../step3_rlhf_finetuning/checkpoint/step3_RL_finetune_LLM/ep1/step30/actor \
+   --gpu 2 > ./log/truthful_qa/conqord_llama2.log 2>&1 &
+```
 
 **Step 4.2**: Evaluating performance for CONQORD
 
